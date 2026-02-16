@@ -1,40 +1,73 @@
 export default function HowItWorks() {
-  return (
-    <section className="py-24 px-6 bg-[#0F172A]">
+  const steps = [
+    {
+      id: "01",
+      title: "Register",
+      desc: "Sign up and create your profile in minutes.",
+    },
+    {
+      id: "02",
+      title: "Form or Join a Team",
+      desc: "Create your own team or join existing ones.",
+    },
+    {
+      id: "03",
+      title: "Build & Submit",
+      desc: "Develop your solution and submit on time.",
+    },
+    {
+      id: "04",
+      title: "Get Evaluated",
+      desc: "Judges review projects and announce results.",
+    },
+  ];
 
-      <h2 className="text-4xl font-bold text-center mb-16 text-purple-400">
+  return (
+    <section className="relative py-28 px-6 text-white">
+
+      {/* Heading */}
+      <h2 className="text-4xl md:text-5xl font-bold text-center mb-20 text-white">
         How It Works
       </h2>
 
-      <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-8 text-center">
+      {/* Steps */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
 
-        {[
-          "Register",
-          "Join Team",
-          "Build Project",
-          "Get Evaluated"
-        ].map((step, i) => (
+        {steps.map((step, i) => (
+          <div
+            key={i}
+            className="relative bg-black/60 backdrop-blur-xl
+                       border border-purple-500/25
+                       rounded-2xl p-8 text-center
+                       transition-all duration-300
+                       hover:border-purple-400/60
+                       hover:-translate-y-2"
+          >
 
-          <div key={i}>
-
-            <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-purple-600 flex items-center justify-center font-bold">
-              {i + 1}
+            {/* Number Circle */}
+            <div
+              className="mx-auto mb-6 w-16 h-16 flex items-center justify-center
+                         rounded-full
+                         bg-gradient-to-r from-purple-500 to-fuchsia-500
+                         text-white font-bold text-lg"
+            >
+              {step.id}
             </div>
 
-            <h3 className="font-semibold mb-2">
-              {step}
+            {/* Title */}
+            <h3 className="text-xl font-semibold mb-3 text-white">
+              {step.title}
             </h3>
 
-            <p className="text-gray-400 text-sm">
-              Simple and fast process.
+            {/* Description */}
+            <p className="text-gray-300 text-sm leading-relaxed">
+              {step.desc}
             </p>
 
           </div>
-
         ))}
 
       </div>
-
     </section>
   );
 }
