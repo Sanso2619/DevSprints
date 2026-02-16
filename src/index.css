@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+/* Keep full height */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* Prevent horizontal scroll */
+body {
+  overflow-x: hidden;
+  background: black;
+}
+
+@keyframes float {
+  0%,100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-40px);
+  }
+}
+
+.animate-float {
+  animation: float 10s ease-in-out infinite;
+}
+
+.delay-2000 {
+  animation-delay: 2s;
+}
+
+.delay-4000 {
+  animation-delay: 4s;
+}
+.delay-6000 {
+  animation-delay: 6s;
+}
