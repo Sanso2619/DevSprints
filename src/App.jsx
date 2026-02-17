@@ -6,6 +6,7 @@ import Hackathons from "./pages/Hackathons";
 import HackathonDetails from "./pages/HackathonDetails";
 import StudentDashboard from "./pages/StudentDashboard";
 import SubmitProject from "./pages/SubmitProject";
+import OrganizerDashboard from "./pages/OrganizerDashboard";
 
 
 
@@ -19,6 +20,8 @@ export default function App() {
       <Route path="/hackathon/:id" element={<HackathonDetails />} />
       <Route path="/dashboard/student" element={<StudentDashboard />} />
       <Route path="/submit/:id" element={<SubmitProject />} />
+      <Route path="/dashboard/organizer" element={<OrganizerDashboard />} />
+
 
 
     </Routes>

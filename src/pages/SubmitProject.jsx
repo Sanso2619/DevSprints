@@ -32,6 +32,15 @@ export default function SubmitProject() {
   };
 
   const handleSubmit = (e) => {
+    const flow =
+    JSON.parse(
+        localStorage.getItem("devsprintsFlow")
+    ) || {};
+
+    if (!flow.submission) {
+    alert("Submissions are currently closed.");
+    return;
+    }
     e.preventDefault();
 
     const submissions =

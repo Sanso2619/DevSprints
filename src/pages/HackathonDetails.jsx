@@ -166,7 +166,15 @@ export default function HackathonDetails() {
 
             <button
                 onClick={() => {
+                const flow =
+                JSON.parse(
+                    localStorage.getItem("devsprintsFlow")
+                ) || {};
 
+                if (!flow.registration) {
+                alert("Registrations are currently closed.");
+                return;
+                }
                 const user = JSON.parse(
                     localStorage.getItem("devsprintsUser")
                 );

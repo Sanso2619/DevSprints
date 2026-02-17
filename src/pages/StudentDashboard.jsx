@@ -13,16 +13,22 @@ import {
 export default function StudentDashboard() {
 
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("devsprintsUser");
+    navigate("/login");
+  };
+
   const user = JSON.parse(localStorage.getItem("devsprintsUser"));
-  
+
   const participationData = [
-  { month: "Jan", joined: 1, submitted: 0 },
-  { month: "Feb", joined: 2, submitted: 1 },
-  { month: "Mar", joined: 3, submitted: 2 },
-  { month: "Apr", joined: 3, submitted: 3 },
-  { month: "May", joined: 4, submitted: 4 },
-  { month: "Jun", joined: 5, submitted: 4 }
-];
+    { month: "Jan", joined: 1, submitted: 0 },
+    { month: "Feb", joined: 2, submitted: 1 },
+    { month: "Mar", joined: 3, submitted: 2 },
+    { month: "Apr", joined: 3, submitted: 3 },
+    { month: "May", joined: 4, submitted: 4 },
+    { month: "Jun", joined: 5, submitted: 4 }
+  ];
 
   // Protect Route
   useEffect(() => {
@@ -45,35 +51,46 @@ export default function StudentDashboard() {
           <span className="text-purple-400">Sprints</span>
         </h2>
 
-        <nav className="space-y-5 text-gray-400 text-sm">
+        {/* NAV */}
+        <nav className="flex-1 flex flex-col justify-between text-gray-400 text-sm">
 
-          <Link
-            to="/dashboard/student"
-            className="block px-4 py-2 rounded-lg bg-purple-600/20 text-purple-400"
-          >
-            Dashboard
-          </Link>
+          {/* Top Links */}
+          <div className="space-y-5">
 
-          <Link
-            to="/hackathons"
-            className="block px-4 py-2 rounded-lg hover:bg-white/5 transition"
-          >
-            Hackathons
-          </Link>
+            <Link
+              to="/dashboard/student"
+              className="block px-4 py-2 rounded-lg bg-purple-600/20 text-purple-400"
+            >
+              Dashboard
+            </Link>
 
-          <Link
-            to="/profile"
-            className="block px-4 py-2 rounded-lg hover:bg-white/5 transition"
-          >
-            Profile
-          </Link>
+            <Link
+              to="/hackathons"
+              className="block px-4 py-2 rounded-lg hover:bg-white/5 transition"
+            >
+              Hackathons
+            </Link>
 
-          <Link
-            to="/"
-            className="block px-4 py-2 rounded-lg hover:bg-white/5 transition mt-10"
-          >
-            Exit
-          </Link>
+            <Link
+              to="/profile"
+              className="block px-4 py-2 rounded-lg hover:bg-white/5 transition"
+            >
+              Profile
+            </Link>
+
+          </div>
+
+          {/* EXIT (Bottom Fixed) */}
+          <div className="pt-6 border-t border-white/10">
+
+            <button
+              onClick={handleLogout}
+              className="w-full py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition"
+            >
+              Exit Panel
+            </button>
+
+          </div>
 
         </nav>
 
@@ -131,71 +148,62 @@ export default function StudentDashboard() {
 
         {/* MAIN GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-                    {/* ANALYTICS PANEL */}
-            <div className="lg:col-span-2 bg-black/60 backdrop-blur border border-white/10 rounded-xl p-8 shadow-xl">
+
+          {/* ANALYTICS PANEL */}
+          <div className="lg:col-span-2 bg-black/60 backdrop-blur border border-white/10 rounded-xl p-8 shadow-xl">
 
             <h2 className="text-xl font-semibold mb-6">
-                Participation Overview
+              Participation Overview
             </h2>
 
             <div className="h-80">
 
-                <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%">
 
                 <LineChart data={participationData}>
 
-                    <CartesianGrid
+                  <CartesianGrid
                     strokeDasharray="3 3"
                     stroke="rgba(255,255,255,0.05)"
-                    />
+                  />
 
-                    <XAxis
-                    dataKey="month"
-                    stroke="#9CA3AF"
-                    />
+                  <XAxis dataKey="month" stroke="#9CA3AF" />
+                  <YAxis stroke="#9CA3AF" />
 
-                    <YAxis
-                    stroke="#9CA3AF"
-                    />
-
-                    <Tooltip
+                  <Tooltip
                     contentStyle={{
-                        backgroundColor: "#050505",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        borderRadius: "8px"
+                      backgroundColor: "#050505",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      borderRadius: "8px"
                     }}
                     labelStyle={{ color: "#fff" }}
-                    />
+                  />
 
-                    {/* Joined Line */}
-                    <Line
+                  <Line
                     type="monotone"
                     dataKey="joined"
                     stroke="#8B5CF6"
                     strokeWidth={3}
                     dot={false}
                     activeDot={{ r: 6 }}
-                    />
+                  />
 
-                    {/* Submitted Line */}
-                    <Line
+                  <Line
                     type="monotone"
                     dataKey="submitted"
                     stroke="#EC4899"
                     strokeWidth={3}
                     dot={false}
                     activeDot={{ r: 6 }}
-                    />
+                  />
 
                 </LineChart>
 
-                </ResponsiveContainer>
+              </ResponsiveContainer>
 
             </div>
 
-        </div>
-
+          </div>
 
           {/* ANNOUNCEMENTS PANEL */}
           <div className="bg-black/60 backdrop-blur border border-white/10 rounded-xl p-8 shadow-xl">
