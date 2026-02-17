@@ -1,7 +1,7 @@
 import StatsCounter from "./StatsCounter";
-import GridBackground from "./GlassOverlay";
 import ThreeBackground from "./ThreeBackground";
 import GlassOverlay from "./GlassOverlay";
+import CTASection from "../component/CTASection";
 
 export default function Hero() {
   return (
@@ -13,10 +13,9 @@ export default function Hero() {
         px-6
         overflow-hidden
         bg-black
-        pt-32 pb-32
+        pt-70 pb-52
       "
     >
-
       {/* Background */}
       <ThreeBackground />
       <GlassOverlay />
@@ -33,13 +32,11 @@ export default function Hero() {
           teams, mentors, and judges in real time.
         </p>
 
+        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-x-24 gap-y-12 mt-10">
-
-
           <StatsCounter title="Teams" end={500} />
           <StatsCounter title="Hackathons" end={50} />
           <StatsCounter title="Judges" end={120} />
-
         </div>
 
       </div>

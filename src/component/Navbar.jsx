@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function Navbar({
   homeRef,
@@ -14,7 +15,16 @@ export default function Navbar({
       block: "start"
     });
   };
- const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(
+      localStorage.getItem("devsprintsUser")
+    );
+    setUser(storedUser);
+  }, []);
+
+const navigate = useNavigate();
  
   return (
     
@@ -70,24 +80,52 @@ export default function Navbar({
 
         </div>
 
-        {/* Auth Buttons */}
-        <div className="flex items-center gap-4">
+      {/* Auth Buttons */}
+      <div className="flex gap-4 items-center">
 
-          <a
-            href="/login"
-            className="text-gray-300 hover:text-white transition font-medium"
-          >
-            Sign In
-          </a>
-          
-          <a
-            href="/signup"
-            className="px-5 py-2 bg-purple-500 text-black rounded-lg font-semibold hover:bg-purple-400 transition flex items-center justify-center"
-          >
-            Sign Up
-          </a>
+        {user ? (
 
-        </div>
+          <button
+            onClick={() => {
+              localStorage.removeItem("devsprintsUser");
+              setUser(null);
+              window.location.href = "/";
+            }}
+            className="text-gray-300 hover:text-red-400 transition"
+          >
+            Logout
+          </button>
+
+        ) : (
+
+          <>
+            <a
+              href="/login"
+              className="text-gray-300 hover:text-white transition"
+            >
+              Sign In
+            </a>
+
+            <a
+              href="/signup"
+              className="
+                px-4 py-2
+                bg-purple-500
+                text-black
+                rounded-lg
+                font-semibold
+                hover:bg-purple-400
+                transition
+              "
+            >
+              Sign Up
+            </a>
+          </>
+        )}
+
+      </div>
+
+
 
       </div>
     </nav>

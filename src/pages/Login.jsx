@@ -11,12 +11,23 @@ export default function Login() {
 
   // Demo login
   const handleLogin = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (role === "student") navigate("/dashboard/student");
-    if (role === "organizer") navigate("/dashboard/organizer");
-    if (role === "sponsor") navigate("/dashboard/sponsor");
+  // Save user (fake auth for demo)
+  const user = {
+    email: email,
+    role: role,
+    isLoggedIn: true
   };
+
+  localStorage.setItem("devsprintsUser", JSON.stringify(user));
+
+  // Redirect based on role
+  if (role === "student") navigate("/dashboard/student");
+  if (role === "organizer") navigate("/dashboard/organizer");
+  if (role === "sponsor") navigate("/dashboard/sponsor");
+};
+
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-6">
