@@ -36,3 +36,65 @@ body {
 .delay-6000 {
   animation-delay: 6s;
 }
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+/* Slow Spin */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 14s linear infinite;
+}
+
+/* Reverse Spin */
+@keyframes spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 18s linear infinite;
+}
+
+/* Scan Effect */
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.animate-scan {
+  animation: scan 6s linear infinite;
+}
+
+/* Eye Glow */
+@keyframes eye {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-eye {
+  animation: eye 2s infinite;
+}
+
+/* Core Pulse */
+@keyframes core {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.animate-core {
+  animation: core 1.5s infinite;
+}
