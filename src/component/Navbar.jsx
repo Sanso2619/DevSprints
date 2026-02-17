@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Navbar({
   homeRef,
   hackathonsRef,
@@ -12,8 +14,10 @@ export default function Navbar({
       block: "start"
     });
   };
-
+ const navigate = useNavigate();
+ 
   return (
+    
     <nav className="fixed top-0 w-full z-50 bg-black/60 backdrop-blur border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
@@ -75,7 +79,7 @@ export default function Navbar({
           >
             Sign In
           </a>
-
+          
           <a
             href="/signup"
             className="px-5 py-2 bg-purple-500 text-black rounded-lg font-semibold hover:bg-purple-400 transition flex items-center justify-center"
