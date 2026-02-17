@@ -1,7 +1,7 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 export default function HackathonDetails() {
-
+  const navigate = useNavigate();
   const { id } = useParams();
 
   // Dummy Data (Same as Hackathons Page)
@@ -161,11 +161,57 @@ export default function HackathonDetails() {
 
           </div>
 
-          {/* Register */}
-          <div className="text-center">
+            {/* Register */}
+            <div className="text-center">
 
             <button
-              className="
+                onClick={() => {
+
+                const user = JSON.parse(
+                    localStorage.getItem("devsprintsUser")
+                );
+
+                // If not logged in
+                if (!user || !user.isLoggedIn) {
+                    navigate("/login");
+                    return;
+                }
+
+                // Get previous registrations
+                const registered =
+                    JSON.parse(
+                    localStorage.getItem("devsprintsRegistrations")
+                    ) || [];
+
+                // Check duplicate
+                const alreadyRegistered = registered.find(
+                    (item) =>
+                    item.user === user.email &&
+                    item.hackathonId === hackathon.id
+                );
+
+                if (alreadyRegistered) {
+                    alert("You are already registered.");
+                    return;
+                }
+
+                // Save registration
+                registered.push({
+                    user: user.email,
+                    hackathonId: hackathon.id,
+                    title: hackathon.title,
+                    status: hackathon.status
+                });
+
+                localStorage.setItem(
+                    "devsprintsRegistrations",
+                    JSON.stringify(registered)
+                );
+
+                alert("Registration successful!");
+
+                }}
+                className="
                 px-10 py-4
                 bg-purple-600/80
                 hover:bg-purple-600
@@ -173,12 +219,13 @@ export default function HackathonDetails() {
                 font-semibold
                 transition
                 shadow-[0_0_20px_rgba(139,92,246,0.4)]
-              "
+                "
             >
-               Register Now
+                Register Now
             </button>
 
-          </div>
+            </div>
+
 
         </div>
 
