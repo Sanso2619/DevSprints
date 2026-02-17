@@ -7,8 +7,17 @@ import HackathonDetails from "./pages/HackathonDetails";
 import StudentDashboard from "./pages/StudentDashboard";
 import SubmitProject from "./pages/SubmitProject";
 import OrganizerDashboard from "./pages/OrganizerDashboard";
+import SponsorDashboard from "./pages/SponsorDashboard";
 
-
+if (!localStorage.getItem("devsprintsFlow")) {
+  localStorage.setItem(
+    "devsprintsFlow",
+    JSON.stringify({
+      registration: true,
+      submission: true
+    })
+  );
+}
 
 export default function App() {
   return (
@@ -21,7 +30,7 @@ export default function App() {
       <Route path="/dashboard/student" element={<StudentDashboard />} />
       <Route path="/submit/:id" element={<SubmitProject />} />
       <Route path="/dashboard/organizer" element={<OrganizerDashboard />} />
-
+      <Route path="/dashboard/sponsor" element={<SponsorDashboard />} />
 
 
     </Routes>

@@ -56,7 +56,7 @@ export default function HackathonDetails() {
   if (!hackathon) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        Hackathon not found 
+        Hackathon not found
       </div>
     );
   }
@@ -122,15 +122,12 @@ export default function HackathonDetails() {
 
           {/* Info */}
           <div className="grid md:grid-cols-2 gap-4 text-gray-300 mb-8">
-
             <p>Date: {hackathon.date}</p>
             <p>Prize: {hackathon.prize}</p>
-
           </div>
 
           {/* Description */}
           <div className="mb-8">
-
             <h2 className="text-2xl font-semibold mb-3">
               About This Hackathon
             </h2>
@@ -138,12 +135,10 @@ export default function HackathonDetails() {
             <p className="text-gray-400 leading-relaxed">
               {hackathon.description}
             </p>
-
           </div>
 
           {/* Tags */}
           <div className="flex flex-wrap gap-3 mb-10">
-
             {hackathon.tags.map((tag) => (
               <span
                 key={tag}
@@ -158,68 +153,70 @@ export default function HackathonDetails() {
                 #{tag}
               </span>
             ))}
-
           </div>
 
-            {/* Register */}
-            <div className="text-center">
+          {/* Register */}
+          <div className="text-center">
 
             <button
-                onClick={() => {
+              onClick={() => {
                 const flow =
-                JSON.parse(
+                  JSON.parse(
                     localStorage.getItem("devsprintsFlow")
-                ) || {};
+                  ) || {};
 
                 if (!flow.registration) {
-                alert("Registrations are currently closed.");
-                return;
+                  alert("Registrations are currently closed.");
+                  return;
                 }
+
                 const user = JSON.parse(
-                    localStorage.getItem("devsprintsUser")
+                  localStorage.getItem("devsprintsUser")
                 );
 
                 // If not logged in
                 if (!user || !user.isLoggedIn) {
-                    navigate("/login");
-                    return;
+                  navigate("/login");
+                  return;
                 }
 
                 // Get previous registrations
                 const registered =
-                    JSON.parse(
+                  JSON.parse(
                     localStorage.getItem("devsprintsRegistrations")
-                    ) || [];
+                  ) || [];
 
                 // Check duplicate
                 const alreadyRegistered = registered.find(
-                    (item) =>
+                  (item) =>
                     item.user === user.email &&
                     item.hackathonId === hackathon.id
                 );
 
                 if (alreadyRegistered) {
-                    alert("You are already registered.");
-                    return;
+                  navigate(`/submit/${hackathon.id}`);
+                  return;
                 }
 
                 // Save registration
                 registered.push({
-                    user: user.email,
-                    hackathonId: hackathon.id,
-                    title: hackathon.title,
-                    status: hackathon.status
+                  user: user.email,
+                  hackathonId: hackathon.id,
+                  title: hackathon.title,
+                  status: hackathon.status
                 });
 
                 localStorage.setItem(
-                    "devsprintsRegistrations",
-                    JSON.stringify(registered)
+                  "devsprintsRegistrations",
+                  JSON.stringify(registered)
                 );
 
-                alert("Registration successful!");
 
-                }}
-                className="
+                //  STEP 2: Redirect to submission page
+                navigate(`/submit/${hackathon.id}`);
+
+              }}
+              className="
                 px-10 py-4
                 bg-purple-600/80
                 hover:bg-purple-600
@@ -227,13 +224,12 @@ export default function HackathonDetails() {
                 font-semibold
                 transition
                 shadow-[0_0_20px_rgba(139,92,246,0.4)]
-                "
+              "
             >
-                Register Now
+              Register Now
             </button>
 
-            </div>
-
+          </div>
 
         </div>
 
