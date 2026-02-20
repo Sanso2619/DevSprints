@@ -10,7 +10,7 @@ public class User {
     private String name;
 
     // The user's password.
-    private String password = "null";
+    private String password;
 
     // The user's level, defaulting to 1.
     private Integer level;

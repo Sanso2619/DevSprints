@@ -117,34 +117,8 @@ public class UserRepository {
             System.err.println("Error fetching user by email: " + e.getMessage());
         }
         return Optional.empty();
-    }
+}
 
-    public Optional<User> signInRepo(String email, String password, String name){
-        String SqlQuery = "INSERT INTO user(email, password, name) VALUES(?, ?, ?)";
-
-        try(Connection connection = getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SqlQuery)){
-                preparedStatement.setString(1, email);
-                preparedStatement.setString(2, password);
-                preparedStatement.setString(3, name);
-
-                try(ResultSet resultSet = preparedStatement.executeQuery()){
-                    
-                    if (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getInt("id"));
-                    user.setName(resultSet.getString("name"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setLevel(resultSet.getInt("level"));
-                    user.setEmail(resultSet.getString("email"));
-                    return Optional.of(user);
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching user by email: " + e.getMessage());
-        }
-        return Optional.empty();
-    }
 
     // Saves a user (either inserts a new user or updates an existing one).
     // Returns the saved User object, potentially with a newly generated ID.

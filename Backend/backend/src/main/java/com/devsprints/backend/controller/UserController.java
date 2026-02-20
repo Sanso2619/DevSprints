@@ -1,11 +1,15 @@
 package com.devsprints.backend.controller;
 
 import com.devsprints.backend.entity.User; // Import the User entity
+import com.devsprints.backend.payload.request.LoginRequest; // Import LoginRequest DTO
+import com.devsprints.backend.payload.request.SignInRequest; // Import SignInRequest DTO
 import com.devsprints.backend.service.UserService; // Import the UserService
 import org.springframework.http.HttpStatus; // For HTTP status codes
 import org.springframework.http.ResponseEntity; // For creating HTTP responses
 import org.springframework.web.bind.annotation.GetMapping; // For mapping HTTP GET requests
 import org.springframework.web.bind.annotation.PathVariable; // For extracting variables from the URI path
+import org.springframework.web.bind.annotation.PostMapping; // For mapping HTTP POST requests
+import org.springframework.web.bind.annotation.RequestBody; // For binding request body to method parameter
 import org.springframework.web.bind.annotation.RequestMapping; // For mapping web requests
 import org.springframework.web.bind.annotation.RestController; // Marks this class as a REST Controller
 
@@ -49,7 +53,7 @@ public class UserController {
     // @PathVariable annotation binds the 'id' from the URI path to the 'id' method parameter.
     // It returns a ResponseEntity<User> with HttpStatus.OK if the user is found,
     // or HttpStatus.NOT_FOUND if the user is not found.
-    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
+    public ResponseEntity<User> getUserByIdCon(@PathVariable Integer id) { // Changed method name
         // Calls the UserService to retrieve a user by ID.
         // The service returns an Optional<User> to gracefully handle non-existent users.
         Optional<User> user = userService.getUserById(id);
@@ -63,32 +67,35 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    // Maps HTTP POST requests to "/api/users/login" to this method.
+    @PostMapping("/login")
+    // This method handles user login requests.
+    // @RequestBody annotation binds the HTTP request body to the LoginRequest object.
+    // It returns a ResponseEntity<User> with HttpStatus.OK if login is successful,
+    // or HttpStatus.UNAUTHORIZED if credentials are invalid.
+    public ResponseEntity<User> loginCon(@RequestBody LoginRequest loginRequest) { // Changed method name
+        // Calls the UserService to attempt user login.
+        Optional<User> user = userService.loginService(loginRequest);
+
+        if (user.isPresent()) {
+            // If login is successful, return HTTP 200 OK with the authenticated user.
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        } else {
+            // If login fails (user not found or invalid credentials), return HTTP 401 UNAUTHORIZED.
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    // Maps HTTP POST requests to "/api/users/signin" to this method.
+    @PostMapping("/signin")
+    // This method handles new user registration requests.
+    // @RequestBody annotation binds the HTTP request body to the SignInRequest object.
+    // It returns a ResponseEntity<User> with HttpStatus.CREATED upon successful registration.
+    public ResponseEntity<User> registerCon(@RequestBody SignInRequest signInRequest) { // Changed method name
+        // Calls the UserService to register a new user.
+        User newUser = userService.signInService(signInRequest);
+        // Returns HTTP 201 CREATED status code along with the newly created user in the response body.
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
 }
-// Meaning of each line:
-// - `package com.devsprints.backend.controller;`: Declares the package this class belongs to.
-// - `import com.devsprints.backend.entity.User;`: Imports the User entity class.
-// - `import com.devsprints.backend.service.UserService;`: Imports the UserService, which this controller will use.
-// - `import org.springframework.http.HttpStatus;`: Imports HttpStatus enum for status codes.
-// - `import org.springframework.http.ResponseEntity;`: Imports ResponseEntity for creating HTTP responses.
-// - `import org.springframework.web.bind.annotation.GetMapping;`: Imports GetMapping annotation.
-// - `import org.springframework.web.bind.annotation.PathVariable;`: Imports PathVariable annotation for extracting URI variables.
-// - `import org.springframework.web.bind.annotation.RequestMapping;`: Imports RequestMapping annotation.
-// - `import org.springframework.web.bind.annotation.RestController;`: Imports RestController annotation.
-// - `import java.util.List;`: Imports the List interface.
-// - `import java.util.Optional;`: Imports Optional to handle possible absence of return values.
-// - `@RestController`: Annotation marks this class as a RESTful web service controller.
-// - `@RequestMapping("/api/users")`: Maps HTTP requests to /api/users to this controller.
-// - `public class UserController {`: Defines a public class for handling user-related web requests.
-// - `private final UserService userService;`: Declares a private, final field for the UserService.
-// - `public UserController(UserService userService) {`: Constructor for dependency injection of UserService.
-// - `this.userService = userService;`: Assigns the injected UserService instance.
-// - `public ResponseEntity<List<User>> getAllUsers() {`: Defines a public method to get all users, returning a ResponseEntity with a list of User objects.
-// - `List<User> users = userService.getAllUsers();`: Calls the UserService to fetch all users.
-// - `return new ResponseEntity<>(users, HttpStatus.OK);`: Returns an HTTP 200 OK response with the list of users in the body.
-// - `@GetMapping("/{id})`: Maps HTTP GET requests for /api/users/{id} to this method, where {id} is a path variable.
-// - `public ResponseEntity<User> getUserById(@PathVariable Integer id) {`: Defines a public method to get a user by ID, extracting ID from the path.
-// - `Optional<User> user = userService.getUserById(id);`: Calls the UserService to fetch a user by ID.
-// - `if (user.isPresent()) {`: Checks if a user was found within the Optional.
-// - `return new ResponseEntity<>(user.get(), HttpStatus.OK);`: If found, returns HTTP 200 OK with the User object.
-// - `else {`: If no user was found.
-// - `return new ResponseEntity<>(HttpStatus.NOT_FOUND);`: Returns HTTP 404 NOT FOUND status.
