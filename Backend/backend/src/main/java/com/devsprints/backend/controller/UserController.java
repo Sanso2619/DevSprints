@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody; // For binding reque
 import org.springframework.web.bind.annotation.RequestMapping; // For mapping web requests
 import org.springframework.web.bind.annotation.RestController; // Marks this class as a REST Controller
 
-import java.util.List; // For returning a list of users
-import java.util.Optional; // For handling Optional return types from service
+import java.util.List; 
+import java.util.Optional;
 
 // Marks this class as a REST Controller, meaning it handles incoming HTTP requests
 // and builds RESTful web services. It automatically serializes return objects to JSON/XML.
@@ -36,9 +36,6 @@ public class UserController {
 
     // Maps HTTP GET requests to "/api/users/allusers" to this method.
     @GetMapping("/allusers")
-    // This method handles the request to get all users.
-    // It returns a ResponseEntity, allowing customization of the HTTP response,
-    // including the status code and the body.
     public ResponseEntity<List<User>> getAllUsers() {
         // Calls the UserService to retrieve all users from the database.
         List<User> users = userService.getAllUsers();

@@ -14,22 +14,16 @@ import java.util.Optional; // To handle cases where a user might not be found by
 @Repository
 public class UserRepository {
 
-    // Injects the database URL from application.properties.
     @Value("${spring.datasource.url}")
     private String dbUrl;
 
-    // Injects the database username from application.properties.
     @Value("${spring.datasource.username}")
     private String dbUsername;
 
-    // Injects the database password from application.properties.
     @Value("${spring.datasource.password}")
     private String dbPassword;
 
-    // A private helper method to establish a database connection.
-    // It uses the injected properties to connect to the database.
     private Connection getConnection() throws SQLException {
-        // DriverManager attempts to establish a connection to the given database URL.
         return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
     }
 
