@@ -9,6 +9,8 @@ public class Hackathon {
 
     private String hackathonName;
 
+    private String hackathonDesc;
+
     private String hackathonMode;
 
     private String duration;
@@ -18,6 +20,8 @@ public class Hackathon {
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
+
+    private String city;
 
     private String locationAddress;
 
@@ -36,17 +40,19 @@ public class Hackathon {
     public Hackathon() {
     }
 
-    public Hackathon(Integer id, String hackathonName, String hackathonMode, String duration, 
+    public Hackathon(Integer id, String hackathonName, String hackathonDesc, String hackathonMode, String duration, 
                      LocalDateTime lastRegistrationDate, LocalDateTime startDate, LocalDateTime endDate, 
-                     String locationAddress, String locationLink, BigDecimal fees, 
+                     String city, String locationAddress, String locationLink, BigDecimal fees, 
                      Integer minTeamSize, Integer maxTeamSize, Integer totalParticipantLimit, Integer creatorId) {
         this.id = id;
         this.hackathonName = hackathonName;
+        this.hackathonDesc = hackathonDesc;
         this.hackathonMode = hackathonMode;
         this.duration = duration;
         this.lastRegistrationDate = lastRegistrationDate;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.city = city;
         this.locationAddress = locationAddress;
         this.locationLink = locationLink;
         this.fees = fees;
@@ -62,6 +68,9 @@ public class Hackathon {
     public String getHackathonName() { return hackathonName; }
     public void setHackathonName(String hackathonName) { this.hackathonName = hackathonName; }
 
+    public String gethackathonDesc() { return hackathonDesc; }
+    public void sethackathonDesc(String hackathonDesc) { this.hackathonDesc = hackathonDesc; }
+
     public String getHackathonMode() { return hackathonMode; }
     public void setHackathonMode(String hackathonMode) { this.hackathonMode = hackathonMode; }
 
@@ -76,6 +85,9 @@ public class Hackathon {
 
     public LocalDateTime getEndDate() { return endDate; }
     public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
 
     public String getLocationAddress() { return locationAddress; }
     public void setLocationAddress(String locationAddress) { this.locationAddress = locationAddress; }
@@ -104,6 +116,7 @@ public class Hackathon {
                 "id=" + id +
                 ", hackathonName='" + hackathonName + '\'' +
                 ", hackathonMode='" + hackathonMode + '\'' +
+                ", city='" + city + '\'' +
                 ", fees=" + fees +
                 ", startDate=" + startDate +
                 '}';

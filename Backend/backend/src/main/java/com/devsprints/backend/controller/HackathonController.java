@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devsprints.backend.service.HackathonService;
 import com.devsprints.backend.entity.Hackathon;
 import com.devsprints.backend.payload.request.CreateHackathonRequest;
+import com.devsprints.backend.payload.request.SearchHackathonRequest;
 
 import java.util.List; 
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class HackathonController {
         this.hackathonService = hackathonService;
     }
 
-    @GetMapping("/allhackathons")
+    @GetMapping("/getallhackathons")
     public ResponseEntity<List<Hackathon>> getAllhackathonsCon(){
         List<Hackathon> hackathons = hackathonService.getAllHackathonsService();
 
@@ -41,6 +42,12 @@ public class HackathonController {
             return new ResponseEntity<>(true, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/searchhackathons")
+    public ResponseEntity<List<Hackathon>> searchHackathons(@RequestBody SearchHackathonRequest request) {
+        List<Hackathon> results = hackathonService.searchHackathonsService(request);
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
 }

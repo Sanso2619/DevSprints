@@ -12,6 +12,8 @@ public class CreateHackathonRequest {
     // The mode of the hackathon (online, onsite, hybrid).
     private String hackathonMode;
 
+    private String hackathonDesc;
+
     // The duration of the hackathon (e.g., 24hrs).
     private String duration;
 
@@ -23,6 +25,8 @@ public class CreateHackathonRequest {
 
     // The ending date and time of the hackathon.
     private LocalDateTime endDate;
+
+    private String city;
 
     // The physical address or "Online".
     private String locationAddress;
@@ -48,17 +52,19 @@ public class CreateHackathonRequest {
     public CreateHackathonRequest() {
     }
 
-    public CreateHackathonRequest(String hackathonName, String hackathonMode, String duration, 
+    public CreateHackathonRequest(String hackathonName, String hackathonDesc, String hackathonMode, String duration, 
                                   LocalDateTime lastRegistrationDate, LocalDateTime startDate, 
-                                  LocalDateTime endDate, String locationAddress, String locationLink, 
+                                  LocalDateTime endDate, String city, String locationAddress, String locationLink, 
                                   BigDecimal fees, Integer minTeamSize, Integer maxTeamSize, 
                                   Integer totalParticipantLimit, Integer creatorId) {
         this.hackathonName = hackathonName;
+        this.hackathonDesc = hackathonDesc;
         this.hackathonMode = hackathonMode;
         this.duration = duration;
         this.lastRegistrationDate = lastRegistrationDate;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.city = city;
         this.locationAddress = locationAddress;
         this.locationLink = locationLink;
         this.fees = fees;
@@ -75,6 +81,9 @@ public class CreateHackathonRequest {
     public void setHackathonName(String hackathonName) {
         this.hackathonName = hackathonName;
     }
+
+    public String gethackathonDesc() { return hackathonDesc; }
+    public void sethackathonDesc(String hackathonDesc) { this.hackathonDesc = hackathonDesc; }
 
     public String getHackathonMode() {
         return hackathonMode;
@@ -164,6 +173,9 @@ public class CreateHackathonRequest {
         this.totalParticipantLimit = totalParticipantLimit;
     }
 
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+
     public Integer getCreatorId() {
         return creatorId;
     }
@@ -176,9 +188,11 @@ public class CreateHackathonRequest {
     public String toString() {
         return "CreateHackathonRequest{" +
                "hackathonName='" + hackathonName + '\'' +
+               "hackathonDesc='" + hackathonDesc + '\'' +
                ", hackathonMode='" + hackathonMode + '\'' +
                ", startDate=" + startDate +
                ", creatorId=" + creatorId +
+               "city='" + city + '\'' +
                '}';
     }
 }

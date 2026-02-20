@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.devsprints.backend.entity.Hackathon;
 import com.devsprints.backend.payload.request.CreateHackathonRequest;
+import com.devsprints.backend.payload.request.SearchHackathonRequest;
 import com.devsprints.backend.repository.HackathonRepository;
 
 @Service
@@ -21,5 +22,9 @@ public class HackathonService {
 
     public Boolean createHackathonService(CreateHackathonRequest request) {
         return hackathonRepository.saveHackathonRepo(request);
+    }
+
+    public List<Hackathon> searchHackathonsService(SearchHackathonRequest request) {
+        return hackathonRepository.getFilteredHackathonsRepo(request);
     }
 }
