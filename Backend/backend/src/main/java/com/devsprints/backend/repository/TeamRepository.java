@@ -113,6 +113,28 @@ public class TeamRepository {
         return Optional.empty();
     }
 
+    public Optional<Team> findByIdTeamRepo(Integer id) { // Using Repo suffix for function name
+        String sql = "SELECT id, teamName, numOfMembers, creatorId FROM team WHERE id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    Team team = new Team();
+                    team.setId(resultSet.getInt("id"));
+                    team.setTeamName(resultSet.getString("teamName"));
+                    team.setNumOfMembers(resultSet.getInt("numOfMembers"));
+                    team.setCreatorId(resultSet.getInt("creatorId"));
+                    return Optional.of(team);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching team by name: " + e.getMessage());
+        }
+        return Optional.empty();
+    }
+
     public boolean addteammemberRepo(Integer teamId, Integer creatorId, Integer newMemberId) {
         String selectCreatorSql = "SELECT creatorId FROM team WHERE id = ?";
         String insertMemberSql = "INSERT INTO teamMembers (teamId, userId) VALUES (?, ?)";

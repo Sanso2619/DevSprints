@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.devsprints.backend.entity.Hackathon;
+import com.devsprints.backend.entity.Team;
 import com.devsprints.backend.entity.User;
 import com.devsprints.backend.payload.request.CreateHackathonRequest;
 import com.devsprints.backend.payload.request.SearchHackathonRequest;
@@ -28,6 +29,8 @@ public class HackathonRepository {
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
     }
+
+    TeamRepository teamRepository;
 
     public List<Hackathon> getAllHackathonsRepo() {
     List<Hackathon> hackathons = new ArrayList<>();
@@ -137,6 +140,7 @@ public class HackathonRepository {
                     Hackathon hackathon = new Hackathon();
                     hackathon.setId(resultSet.getInt("id"));
                     hackathon.setHackathonName(resultSet.getString("hackathonName"));
+                    hackathon.sethackathonDesc(resultSet.getString("hackathonDesc"));
                     hackathon.setCity(resultSet.getString("city"));
                     hackathon.setHackathonMode(resultSet.getString("hackathonMode"));
                     hackathon.setMinTeamSize(resultSet.getInt("minTeamSize"));
@@ -148,6 +152,45 @@ public class HackathonRepository {
             e.printStackTrace();
         }
         return hackathons;
+    }
+
+    public boolean enrollTeamRepo(Integer hackathonId, Integer teamId, Integer teamSize) {
+        String updateLimitSql = "UPDATE hackathon SET totalParticipantLimit = totalParticipantLimit - ? " +
+                                "WHERE id = ? AND totalParticipantLimit >= ?";
+        String enrollSql = "INSERT INTO enrolledHackathons (hackathonId, teamId) VALUES (?, ?)";
+
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement updateStmt = connection.prepareStatement(updateLimitSql);
+                PreparedStatement enrollStmt = connection.prepareStatement(enrollSql)) {
+
+                updateStmt.setInt(1, teamSize);
+                updateStmt.setInt(2, hackathonId);
+                updateStmt.setInt(3, teamSize);
+                
+                int rowsUpdated = updateStmt.executeUpdate();
+                if (rowsUpdated == 0) {
+                    connection.rollback();
+                    return false;
+                }
+
+                enrollStmt.setInt(1, hackathonId);
+                enrollStmt.setInt(2, teamId);
+                enrollStmt.executeUpdate();
+
+                connection.commit();
+                return true;
+
+            } catch (SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
