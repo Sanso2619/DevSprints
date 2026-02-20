@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import Navbar from "../component/Navbar";
-
+import CTASection from "../component/CTASection";
 import Hero from "../component/Hero";
 import LiveHackathons from "../component/LiveHackathons";
 import Features from "../component/Features";
@@ -33,6 +33,8 @@ export default function LandingPage() {
       <section ref={homeRef}>
         <Hero />
       </section>
+
+      <CTASection />
 
       <section ref={hackathonsRef}>
         <LiveHackathons />
