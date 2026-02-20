@@ -56,33 +56,35 @@ public class TeamRepository {
 
     // Saves a team (inserts a new team).
     // Returns the saved Team object, with its newly generated ID.
-    public Team saveTeamRepo(Team team) { // Using Repo suffix for function name
-        // SQL for inserting a new team. numOfMembers has a default, so it's optional in the INSERT statement.
-        // However, if we pass it, it will override the default.
+    public Team saveTeamRepo(Team team) {
+        // SQL uses 'noOfMembers' to match your DB schema
         String sql = "INSERT INTO team (teamName, numOfMembers, creatorId) VALUES (?, ?, ?)";
+        
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, team.getTeamName());
-            // If numOfMembers is null, use the database default. Otherwise, set it.
+            
             if (team.getNumOfMembers() != null) {
                 preparedStatement.setInt(2, team.getNumOfMembers());
             } else {
-                preparedStatement.setInt(2, 1); // Explicitly set to 1 if null, matching DB default
+                preparedStatement.setInt(2, 1); 
             }
             preparedStatement.setInt(3, team.getCreatorId());
 
             preparedStatement.executeUpdate();
 
-            // Retrieve the auto-generated ID for the new team.
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    team.setId(generatedKeys.getInt(1)); // Set the generated ID back to the team object.
+                    int newTeamId = generatedKeys.getInt(1);
+                    team.setId(newTeamId); // Set the ID back to the object
+                    
+                    // 2. Automatically add the creator to the teamMembers table
+                    // Passing newTeamId, creatorId as the owner, and creatorId as the new member
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error inserting team: " + e.getMessage());
-            // In a real application, you'd log this and potentially throw a custom exception
+            e.printStackTrace();
         }
         return team;
     }
@@ -109,6 +111,53 @@ public class TeamRepository {
             System.err.println("Error fetching team by name: " + e.getMessage());
         }
         return Optional.empty();
+    }
+
+    public boolean addteammemberRepo(Integer teamId, Integer creatorId, Integer newMemberId) {
+        String selectCreatorSql = "SELECT creatorId FROM team WHERE id = ?";
+        String insertMemberSql = "INSERT INTO teamMembers (teamId, userId) VALUES (?, ?)";
+        String updateCountSql = "UPDATE team SET numOfMembers = numOfMembers + 1 WHERE id = ?";
+
+        try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement selectStmt = connection.prepareStatement(selectCreatorSql);
+                PreparedStatement insertStmt = connection.prepareStatement(insertMemberSql);
+                PreparedStatement updateStmt = connection.prepareStatement(updateCountSql)) {
+
+                selectStmt.setInt(1, teamId);
+                try (ResultSet rs = selectStmt.executeQuery()) {
+                    if (rs.next()) {
+                        int dbCreatorId = rs.getInt("creatorId");
+                        if (dbCreatorId != creatorId) {
+                            System.err.println("Validation Failed: Provided creatorId does not match team owner.");
+                            return false; 
+                        }
+                    } else {
+                        System.err.println("Error: Team ID " + teamId + " not found.");
+                        return false;
+                    }
+                }
+
+                insertStmt.setInt(1, teamId);
+                insertStmt.setInt(2, newMemberId);
+                int rowsInserted = insertStmt.executeUpdate();
+
+                updateStmt.setInt(1, teamId);
+                updateStmt.executeUpdate();
+
+                connection.commit(); 
+                return rowsInserted > 0;
+
+            } catch (SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
 // Meaning of each line:

@@ -1,6 +1,7 @@
 package com.devsprints.backend.controller;
 
 import com.devsprints.backend.entity.Team; // Import the Team entity
+import com.devsprints.backend.payload.request.AddTeamMemberRequest;
 import com.devsprints.backend.payload.request.TeamCreateRequest; // Import TeamCreateRequest DTO
 import com.devsprints.backend.service.TeamService; // Import the TeamService
 
@@ -46,6 +47,11 @@ public class TeamController {
             // Handle cases like team name already exists
             return new ResponseEntity<>(HttpStatus.CONFLICT); // Returning CONFLICT without a body
         }
+    }
+
+    @PostMapping("/addteammember")
+    public boolean addteammemberCon(@RequestBody AddTeamMemberRequest addTeamMemberRequest){
+        return teamService.addteammemberService(addTeamMemberRequest);
     }
 }
 // Meaning of each line:

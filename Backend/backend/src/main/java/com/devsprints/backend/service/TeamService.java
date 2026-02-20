@@ -2,6 +2,7 @@ package com.devsprints.backend.service;
 
 import com.devsprints.backend.entity.Team; // Import the Team entity
 import com.devsprints.backend.repository.TeamRepository; // Import the TeamRepository
+import com.devsprints.backend.payload.request.AddTeamMemberRequest;
 import com.devsprints.backend.payload.request.TeamCreateRequest; // Import TeamCreateRequest DTO
 import org.springframework.stereotype.Service; // Marks this class as a Spring Service
 
@@ -51,6 +52,10 @@ public class TeamService {
             System.err.println("Error: Team saved but could not be re-fetched by name: " + savedTeam.getTeamName());
             return savedTeam; // Fallback
         }
+    }
+
+    public boolean addteammemberService(AddTeamMemberRequest addTeamMemberRequest){
+        return teamRepository.addteammemberRepo(addTeamMemberRequest.getTeamId(), addTeamMemberRequest.getCreatorId(), addTeamMemberRequest.getNewMemberId());
     }
 }
 // Meaning of each line:
