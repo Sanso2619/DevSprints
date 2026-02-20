@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
 import Hackathons from "./pages/Hackathons";
 import HackathonDetails from "./pages/HackathonDetails";
 import StudentDashboard from "./pages/StudentDashboard";
@@ -25,6 +26,7 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/hackathons" element={<Hackathons />} />
       <Route path="/hackathon/:id" element={<HackathonDetails />} />
       <Route path="/dashboard/student" element={<StudentDashboard />} />
