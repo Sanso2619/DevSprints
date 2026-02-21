@@ -1,81 +1,51 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-import sqlite3
 
 app = FastAPI()
 
-# ---------------- CORS ----------------
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # Dev only
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ---------------- DB ----------------
-conn = sqlite3.connect("users.db", check_same_thread=False)
-cursor = conn.cursor()
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    email TEXT UNIQUE,
-    password TEXT,
-    level INTEGER DEFAULT 1
-)
-""")
-
-conn.commit()
+# Fake memory
+users = []
+uid = 1
 
 
-# ---------------- Models ----------------
 class SignupRequest(BaseModel):
+    email: str
     name: str
-    email: str
     password: str
 
 
-class LoginRequest(BaseModel):
-    email: str
-    password: str
+@app.post("/api/users/signup")
+async def signup(user: SignupRequest):
+    global uid
 
-
-# ---------------- SIGNUP ----------------
-@app.post("/signup")
-def signup(user: SignupRequest):
-    return {
-        "id": 123,
-        "name": user.name,
+    new_user = {
+        "userId": uid,
+        "userName": user.name,
         "password": user.password,
         "level": 1,
         "email": user.email
     }
 
+    users.append(new_user)
+    uid += 1
 
-# ---------------- LOGIN ----------------
-@app.post("/login")
-def login(user: LoginRequest):
+    return new_user
 
-    cursor.execute("""
-    SELECT id, name, email, password, level
-    FROM users WHERE email=?
-    """, (user.email,))
 
-    db_user = cursor.fetchone()
+@app.post("/api/users/login")
+async def login(user: SignupRequest):
 
-    if not db_user:
-        raise HTTPException(status_code=400, detail="User not found")
+    for u in users:
+        if u["email"] == user.email and u["password"] == user.password:
+            return u
 
-    if db_user[3] != user.password:
-        raise HTTPException(status_code=400, detail="Wrong password")
-
-    return {
-        "id": db_user[0],
-        "name": db_user[1],
-        "email": db_user[2],
-        "password": db_user[3],
-        "level": db_user[4]
-    }
+    return {"error": "Invalid credentials"}
