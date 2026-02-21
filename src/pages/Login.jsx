@@ -17,15 +17,14 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/login", {
+      const res = await fetch("http://127.0.0.1:8000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
-          password,
-          role,
+          password
         }),
       });
 
@@ -35,20 +34,11 @@ export default function Login() {
       if (res.ok && data.success) {
         const user = {
           email: data.user.email,
-          role: data.user.role,
           isLoggedIn: true,
         };
 
         localStorage.setItem("devsprintsUser", JSON.stringify(user));
-
-        // Redirect
-        if (user.role === "student") navigate("/dashboard/student");
-        if (user.role === "organizer") navigate("/dashboard/organizer");
-        if (user.role === "sponsor") navigate("/dashboard/sponsor");
-      }
-
-      // FAILED
-      else {
+      }else {
         alert(data.message || "Invalid login");
       }
     } catch (err) {
