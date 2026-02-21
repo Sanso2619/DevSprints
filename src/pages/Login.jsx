@@ -8,26 +8,56 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("student");
   const [isPasswordFocus, setIsPasswordFocus] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Demo login
-  const handleLogin = (e) => {
-  e.preventDefault();
+  // REAL LOGIN
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  // Save user (fake auth for demo)
-  const user = {
-    email: email,
-    role: role,
-    isLoggedIn: true
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          role,
+        }),
+      });
+
+      const data = await res.json();
+
+      // SUCCESS
+      if (res.ok && data.success) {
+        const user = {
+          email: data.user.email,
+          role: data.user.role,
+          isLoggedIn: true,
+        };
+
+        localStorage.setItem("devsprintsUser", JSON.stringify(user));
+
+        // Redirect
+        if (user.role === "student") navigate("/dashboard/student");
+        if (user.role === "organizer") navigate("/dashboard/organizer");
+        if (user.role === "sponsor") navigate("/dashboard/sponsor");
+      }
+
+      // FAILED
+      else {
+        alert(data.message || "Invalid login");
+      }
+    } catch (err) {
+      console.error("Login Error:", err);
+      alert("Cannot connect to server");
+    }
+
+    setLoading(false);
   };
-
-  localStorage.setItem("devsprintsUser", JSON.stringify(user));
-
-  // Redirect based on role
-  if (role === "student") navigate("/dashboard/student");
-  if (role === "organizer") navigate("/dashboard/organizer");
-  if (role === "sponsor") navigate("/dashboard/sponsor");
-};
-
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-6">
@@ -45,7 +75,7 @@ export default function Login() {
           </h1>
 
           <h2 className="text-2xl font-semibold mb-2 text-white">
-            Welcome Back 
+            Welcome Back
           </h2>
 
           <p className="text-gray-400 mb-8">
@@ -103,9 +133,10 @@ export default function Login() {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full py-3 bg-purple-500 text-black font-semibold rounded-lg hover:bg-purple-400 transition shadow-[0_0_20px_rgba(139,92,246,0.6)]"
+              disabled={loading}
+              className="w-full py-3 bg-purple-500 text-black font-semibold rounded-lg hover:bg-purple-400 transition shadow-[0_0_20px_rgba(139,92,246,0.6)] disabled:opacity-50"
             >
-              Sign In
+              {loading ? "Signing In..." : "Sign In"}
             </button>
 
           </form>
