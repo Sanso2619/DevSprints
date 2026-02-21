@@ -73,6 +73,7 @@ public class UserController {
     // or HttpStatus.UNAUTHORIZED if credentials are invalid.
     public ResponseEntity<User> loginCon(@RequestBody LoginRequest loginRequest) { // Changed method name
         // Calls the UserService to attempt user login.
+        System.out.println("------------ Req recieved : " + loginRequest.getEmail() + loginRequest.getPassword());
         Optional<User> user = userService.loginService(loginRequest);
 
         if (user.isPresent()) {
