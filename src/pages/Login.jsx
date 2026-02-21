@@ -18,7 +18,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/login", {
+      const res = await fetch("http://localhost:8080/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +26,7 @@ export default function Login() {
         body: JSON.stringify({
           email,
           password,
-          role
+          role,
         }),
       });
 
@@ -35,7 +35,6 @@ export default function Login() {
       // 1. Check if the response is successful (status 200-299)
       // 2. Check if data exists (since your backend doesn't send a "success" key)
       if (res.ok && data.id) {
-        
         // ✅ Store data using the keys from your JSON response
         sessionStorage.setItem("userId", data.id);
         sessionStorage.setItem("userName", data.name);
@@ -43,7 +42,7 @@ export default function Login() {
         sessionStorage.setItem("userLevel", data.level); // Extra: storing the level
 
         navigate("/dashboard");
-      } else {
+      } else if (res.UNAUTHORIZED) {
         // Fallback for failed login
         alert(data.message || "Invalid credentials. Please try again.");
       }
@@ -58,13 +57,10 @@ export default function Login() {
   // ---------------- UI ----------------
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-6">
-      
       {/* Main Card */}
       <div className="w-full max-w-6xl bg-[#050505] rounded-2xl overflow-hidden shadow-2xl border border-white/10 grid grid-cols-1 md:grid-cols-2">
-
         {/* LEFT - FORM */}
         <div className="p-10 flex flex-col justify-center">
-
           {/* Logo */}
           <h1 className="text-3xl font-bold mb-6">
             <span className="text-white">Dev</span>
@@ -75,13 +71,10 @@ export default function Login() {
             Welcome Back
           </h2>
 
-          <p className="text-gray-400 mb-8">
-            Login to continue your journey
-          </p>
+          <p className="text-gray-400 mb-8">Login to continue your journey</p>
 
           {/* Form */}
           <form onSubmit={handleLogin} className="space-y-5">
-
             {/* Email */}
             <div>
               <label className="text-sm text-gray-400">Email</label>
@@ -132,7 +125,6 @@ export default function Login() {
             >
               {loading ? "Signing In..." : "Sign In"}
             </button>
-
           </form>
 
           {/* Footer */}
@@ -146,7 +138,6 @@ export default function Login() {
 
         {/* RIGHT - FUTURISTIC PANEL */}
         <div className="hidden md:flex items-center justify-center relative bg-black overflow-hidden">
-          
           {/* Background Glow */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(139,92,246,0.15)_0%,_transparent_70%)]"></div>
 
@@ -158,17 +149,30 @@ export default function Login() {
 
           {/* Robot Core */}
           <div
-            className={"relative transition-all duration-500 " + (isPasswordFocus ? "scale-105 rotate-6" : "rotate-0")}
+            className={
+              "relative transition-all duration-500 " +
+              (isPasswordFocus ? "scale-105 rotate-6" : "rotate-0")
+            }
           >
             {/* Head */}
             <div className="w-44 h-44 bg-[#0f0f0f] rounded-2xl border border-purple-500/40 flex items-center justify-center shadow-[0_0_40px_rgba(139,92,246,0.4)]">
               {/* Eyes */}
               <div className="flex gap-8">
                 <div
-                  className={"w-6 h-6 rounded-full transition-all duration-300 " + (isPasswordFocus ? "bg-gray-600" : "bg-purple-400 shadow-[0_0_20px_rgba(139,92,246,0.8)]")}
+                  className={
+                    "w-6 h-6 rounded-full transition-all duration-300 " +
+                    (isPasswordFocus
+                      ? "bg-gray-600"
+                      : "bg-purple-400 shadow-[0_0_20px_rgba(139,92,246,0.8)]")
+                  }
                 ></div>
                 <div
-                  className={"w-6 h-6 rounded-full transition-all duration-300 " + (isPasswordFocus ? "bg-gray-600" : "bg-purple-400 shadow-[0_0_20px_rgba(139,92,246,0.8)]")}
+                  className={
+                    "w-6 h-6 rounded-full transition-all duration-300 " +
+                    (isPasswordFocus
+                      ? "bg-gray-600"
+                      : "bg-purple-400 shadow-[0_0_20px_rgba(139,92,246,0.8)]")
+                  }
                 ></div>
               </div>
             </div>
@@ -176,7 +180,12 @@ export default function Login() {
             {/* Energy Core */}
             <div className="w-56 h-44 bg-[#0a0a0a] mt-6 rounded-xl border border-white/10 flex items-center justify-center relative overflow-hidden">
               <div
-                className={"w-16 h-16 rounded-full transition-all duration-500 " + (isPasswordFocus ? "bg-purple-500 animate-pulse shadow-[0_0_40px_rgba(139,92,246,0.9)]" : "bg-gray-700")}
+                className={
+                  "w-16 h-16 rounded-full transition-all duration-500 " +
+                  (isPasswordFocus
+                    ? "bg-purple-500 animate-pulse shadow-[0_0_40px_rgba(139,92,246,0.9)]"
+                    : "bg-gray-700")
+                }
               ></div>
             </div>
           </div>

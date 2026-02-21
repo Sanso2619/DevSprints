@@ -6,6 +6,7 @@ import com.devsprints.backend.payload.request.SignInRequest; // Import SignInReq
 import com.devsprints.backend.service.UserService; // Import the UserService
 import org.springframework.http.HttpStatus; // For HTTP status codes
 import org.springframework.http.ResponseEntity; // For creating HTTP responses
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping; // For mapping HTTP GET requests
 import org.springframework.web.bind.annotation.PathVariable; // For extracting variables from the URI path
 import org.springframework.web.bind.annotation.PostMapping; // For mapping HTTP POST requests
@@ -22,6 +23,7 @@ import java.util.Optional;
 // Maps all requests starting with "/api/users" to this controller.
 // This creates a base path for all endpoints defined within this controller.
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     // Dependency Injection: Spring will automatically provide an instance
@@ -73,11 +75,11 @@ public class UserController {
     // or HttpStatus.UNAUTHORIZED if credentials are invalid.
     public ResponseEntity<User> loginCon(@RequestBody LoginRequest loginRequest) { // Changed method name
         // Calls the UserService to attempt user login.
-        System.out.println("------------ Req recieved : " + loginRequest.getEmail() + loginRequest.getPassword());
         Optional<User> user = userService.loginService(loginRequest);
 
         if (user.isPresent()) {
             // If login is successful, return HTTP 200 OK with the authenticated user.
+            System.out.println(user.get());
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
             // If login fails (user not found or invalid credentials), return HTTP 401 UNAUTHORIZED.
@@ -86,7 +88,7 @@ public class UserController {
     }
 
     // Maps HTTP POST requests to "/api/users/signin" to this method.
-    @PostMapping("/signin")
+    @PostMapping("/signup")
     // This method handles new user registration requests.
     // @RequestBody annotation binds the HTTP request body to the SignInRequest object.
     // It returns a ResponseEntity<User> with HttpStatus.CREATED upon successful registration.
