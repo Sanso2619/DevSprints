@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+//Not connected to the actual server 
 export default function Login() {
   const navigate = useNavigate();
 
