@@ -26,7 +26,7 @@ async def login(user: LoginRequest):
 
     return {
         "success": True,
-        "user": {
-            "email": user.email
-        }
+        "email": user.email,
+        "name" : "userName",
+        "id" : 123
     }
