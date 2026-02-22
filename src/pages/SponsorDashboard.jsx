@@ -6,7 +6,9 @@ import Sidebar from "../component/Sidebar";
 export default function SponsorDashboard() {
 
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("devsprintsUser"));
+
+  // ✅ FIX: Use sessionStorage instead of localStorage
+  const user = JSON.parse(sessionStorage.getItem("devsprintsUser"));
 
   useEffect(() => {
     if (!user || !user.isLoggedIn || user.role !== "sponsor") {
@@ -94,8 +96,12 @@ export default function SponsorDashboard() {
                       className="bg-white/5 border border-white/5 rounded-2xl p-6 flex justify-between items-center hover:bg-white/10 hover:border-purple-500/30 transition-all duration-300 cursor-pointer group"
                     >
                       <div>
-                        <p className="font-bold text-white group-hover:text-purple-400 transition">{item.title}</p>
-                        <p className="text-gray-500 text-sm mt-1">{item.stats}</p>
+                        <p className="font-bold text-white group-hover:text-purple-400 transition">
+                          {item.title}
+                        </p>
+                        <p className="text-gray-500 text-sm mt-1">
+                          {item.stats}
+                        </p>
                       </div>
                       <span className="px-3 py-1 bg-green-500/10 text-green-400 text-[10px] font-bold uppercase rounded-lg border border-green-500/20">
                         Active
@@ -122,7 +128,9 @@ export default function SponsorDashboard() {
                       key={team.name}
                       className="bg-white/5 border border-white/5 rounded-2xl p-6 flex justify-between items-center hover:bg-white/10 transition-all duration-300 cursor-pointer group"
                     >
-                      <p className="font-bold text-white group-hover:text-blue-400 transition">{team.name}</p>
+                      <p className="font-bold text-white group-hover:text-blue-400 transition">
+                        {team.name}
+                      </p>
                       <p className="text-green-400 font-black text-lg">
                         {team.score}
                       </p>
@@ -158,6 +166,7 @@ export default function SponsorDashboard() {
                 </button>
               </div>
             </div>
+
           </div>
         </main>
       </div>
