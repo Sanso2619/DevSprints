@@ -6,7 +6,10 @@ import Sidebar from "../component/Sidebar";
 export default function OrganizerDashboard() {
 
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("devsprintsUser"));
+
+  // ✅ FIX: Use sessionStorage instead of localStorage
+  const user = JSON.parse(sessionStorage.getItem("devsprintsUser"));
+
   const [submissions, setSubmissions] = useState([]);
 
   useEffect(() => {
@@ -14,9 +17,10 @@ export default function OrganizerDashboard() {
       navigate("/login");
     }
 
+    // ✅ FIX: Use sessionStorage for submissions (optional but consistent)
     const data =
       JSON.parse(
-        localStorage.getItem("devsprintsSubmissions")
+        sessionStorage.getItem("devsprintsSubmissions")
       ) || [];
 
     setSubmissions(data);
