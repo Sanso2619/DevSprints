@@ -66,9 +66,12 @@ export default function StudentDashboard() {
               </h1>
               <p className="text-gray-400 text-lg mt-2 font-medium">
                 Welcome back,{" "}
-                <span className="text-purple-400 font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.8)]">
-                  {user.name}
-                </span>
+                <button
+  onClick={() => navigate("/profile")}
+  className="text-purple-400 font-bold drop-shadow-[0_0_8px_rgba(139,92,246,0.8)] hover:underline hover:text-purple-300 transition"
+>
+  {user.name}
+</button>
               </p>
             </header>
 
